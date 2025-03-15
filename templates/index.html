@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="logo-container">
-        <img src="/static/logo.png" alt="Casinueves" class="logo">
+        <img src="/static/logo.png" alt="Casinueves">
     </div>
 
     <div class="stats-container">
@@ -22,19 +22,19 @@
     </div>
 
     <div class="card-buttons">
-        <button class="card-btn" onclick="updateCount(1)">2♦️</button>
-        <button class="card-btn" onclick="updateCount(1)">3♣️</button>
-        <button class="card-btn" onclick="updateCount(2)">4♥️</button>
-        <button class="card-btn" onclick="updateCount(2)">5♠️</button>
-        <button class="card-btn" onclick="updateCount(1)">6♦️</button>
-        <button class="card-btn" onclick="updateCount(1)">7♣️</button>
-        <button class="card-btn" onclick="updateCount(0)">8♥️</button>
-        <button class="card-btn" onclick="updateCount(0)">9♠️</button>
-        <button class="card-btn" onclick="updateCount(-2)">10♦️</button>
-        <button class="card-btn" onclick="updateCount(-2)">J♣️</button>
-        <button class="card-btn" onclick="updateCount(-2)">Q♥️</button>
-        <button class="card-btn" onclick="updateCount(-2)">K♠️</button>
-        <button class="card-btn" onclick="updateCount(0)">A♦️</button>
+        <button onclick="updateCount(1)">2♦️</button>
+        <button onclick="updateCount(1)">3♣️</button>
+        <button onclick="updateCount(2)">4♥️</button>
+        <button onclick="updateCount(2)">5♠️</button>
+        <button onclick="updateCount(1)">6♦️</button>
+        <button onclick="updateCount(1)">7♣️</button>
+        <button onclick="updateCount(0)">8♥️</button>
+        <button onclick="updateCount(0)">9♠️</button>
+        <button onclick="updateCount(-2)">10♦️</button>
+        <button onclick="updateCount(-2)">J♣️</button>
+        <button onclick="updateCount(-2)">Q♥️</button>
+        <button onclick="updateCount(-2)">K♠️</button>
+        <button onclick="updateCount(0)">A♦️</button>
     </div>
 
     <div class="bankroll-container">
@@ -51,5 +51,40 @@
         <button class="result-button gold" onclick="updateGameResult('lose')">Défaite</button>
         <button class="result-button cyan" onclick="updateGameResult('push')">Abandon</button>
     </div>
+
+    <!-- 📌 Ajout des scripts directement dans la page -->
+    <script>
+        async function updateCount(value) {
+            let response = await fetch("/update_count", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "card=" + value
+            });
+
+            let data = await response.json();
+            document.getElementById("running_count").innerText = data["Running Count"];
+            document.getElementById("true_count").innerText = data["True Count"];
+            document.getElementById("decks_remaining").innerText = data["Decks Remaining"];
+        }
+
+        function updateBankroll() {
+            let newBankroll = parseFloat(document.getElementById("bankrollInput").value);
+            if (!isNaN(newBankroll) && newBankroll > 0) {
+                document.getElementById("bankroll").innerText = newBankroll.toFixed(2);
+            }
+        }
+
+        function updateGameResult(result) {
+            let bankrollElement = document.getElementById("bankroll");
+            let bankroll = parseFloat(bankrollElement.innerText);
+            let bet = parseFloat(document.getElementById("suggested_bet").innerText);
+            
+            if (result === "win") bankroll += bet;
+            else if (result === "lose") bankroll -= bet;
+
+            bankrollElement.innerText = bankroll.toFixed(2);
+            document.getElementById("bankrollInput").value = bankroll.toFixed(2);
+        }
+    </script>
 </body>
 </html>
