@@ -9,31 +9,32 @@
 </head>
 <body>
     <div class="logo-container">
-        <img src="/static/logo.png" alt="Casinueves">
+        <img src="/static/logo.png" alt="Casinueves" class="logo">
     </div>
 
     <div class="stats-container">
-        <p>Running Count: <span class="highlight" id="running_count">0</span></p>
-        <p>True Count: <span class="highlight" id="true_count">0.00</span></p>
-        <p>Decks Restants: <span class="highlight" id="decks_remaining">6.00</span></p>
-        <p>Mise suggérée: <span class="highlight" id="suggested_bet">10</span></p>
-        <p>Bankroll: <span class="highlight" id="bankroll">1000.00</span></p>
+        <h2>Statistiques</h2>
+        <p>Running Count: <span class="highlight gold" id="running_count">0</span></p>
+        <p>True Count: <span class="highlight emerald" id="true_count">0.00</span></p>
+        <p>Decks Restants: <span class="highlight cyan" id="decks_remaining">6.00</span></p>
+        <p>Mise suggérée: <span class="highlight gold" id="suggested_bet">10</span></p>
+        <p>Bankroll: <span class="highlight emerald" id="bankroll">1000.00</span></p>
     </div>
 
     <div class="card-buttons">
-        <button onclick="updateCount(1)">2♦️</button>
-        <button onclick="updateCount(1)">3♣️</button>
-        <button onclick="updateCount(2)">4♥️</button>
-        <button onclick="updateCount(2)">5♠️</button>
-        <button onclick="updateCount(1)">6♦️</button>
-        <button onclick="updateCount(1)">7♣️</button>
-        <button onclick="updateCount(0)">8♥️</button>
-        <button onclick="updateCount(0)">9♠️</button>
-        <button onclick="updateCount(-2)">10♦️</button>
-        <button onclick="updateCount(-2)">J♣️</button>
-        <button onclick="updateCount(-2)">Q♥️</button>
-        <button onclick="updateCount(-2)">K♠️</button>
-        <button onclick="updateCount(0)">A♦️</button>
+        <button class="card-btn" onclick="updateCount(1)">2♦️</button>
+        <button class="card-btn" onclick="updateCount(1)">3♣️</button>
+        <button class="card-btn" onclick="updateCount(2)">4♥️</button>
+        <button class="card-btn" onclick="updateCount(2)">5♠️</button>
+        <button class="card-btn" onclick="updateCount(1)">6♦️</button>
+        <button class="card-btn" onclick="updateCount(1)">7♣️</button>
+        <button class="card-btn" onclick="updateCount(0)">8♥️</button>
+        <button class="card-btn" onclick="updateCount(0)">9♠️</button>
+        <button class="card-btn" onclick="updateCount(-2)">10♦️</button>
+        <button class="card-btn" onclick="updateCount(-2)">J♣️</button>
+        <button class="card-btn" onclick="updateCount(-2)">Q♥️</button>
+        <button class="card-btn" onclick="updateCount(-2)">K♠️</button>
+        <button class="card-btn" onclick="updateCount(0)">A♦️</button>
     </div>
 
     <div class="bankroll-container">
@@ -46,9 +47,9 @@
 
     <div class="game-result">
         <h3>Résultat de la manche :</h3>
-        <button class="result-button" onclick="updateGameResult('win')">Victoire</button>
-        <button class="result-button" onclick="updateGameResult('lose')">Défaite</button>
-        <button class="result-button" onclick="updateGameResult('push')">Abandon</button>
+        <button class="result-button emerald" onclick="updateGameResult('win')">Victoire</button>
+        <button class="result-button gold" onclick="updateGameResult('lose')">Défaite</button>
+        <button class="result-button cyan" onclick="updateGameResult('push')">Abandon</button>
     </div>
 </body>
 </html>

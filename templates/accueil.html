@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <div class="casino-effects-container"></div>
+    
     <div class="container">
         <img src="/static/logo.png" alt="Casinueves Logo" class="logo">
         <h1 class="animated-text">Bienvenue sur <span class="highlight">Casinueves</span></h1>
@@ -14,5 +16,31 @@
         <p class="description">Casinueves est votre compagnon idéal pour améliorer votre jeu au blackjack grâce à une méthode de comptage avancée. Que vous soyez débutant ou expert, notre outil vous aidera à prendre les meilleures décisions pour maximiser vos gains. Plongez dans une expérience immersive avec une interface élégante et optimisée.</p>
         <a href="/blackjack" class="btn">Commencer</a>
     </div>
+
+    <script>
+        function generateCasinoEffect() {
+            const effectsContainer = document.querySelector(".casino-effects-container");
+            const symbols = ["♦️", "♣️", "♥️", "♠️", "💰", "🎲", "🎰"];
+            const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+            
+            const span = document.createElement("span");
+            span.className = "casino-effect";
+            span.innerText = randomSymbol;
+            
+            const randomX = Math.random() * 100;
+            const randomDuration = Math.random() * 3 + 2;
+            
+            span.style.left = `${randomX}%`;
+            span.style.animationDuration = `${randomDuration}s`;
+            
+            effectsContainer.appendChild(span);
+            
+            setTimeout(() => {
+                span.remove();
+            }, randomDuration * 1000);
+        }
+        
+        setInterval(generateCasinoEffect, 1000);
+    </script>
 </body>
 </html>
