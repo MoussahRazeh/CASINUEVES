@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casinueves</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #E0E0E0;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 180px;
+            filter: drop-shadow(0px 0px 10px rgba(255, 215, 0, 0.5));
+            margin-bottom: 15px;
+        }
+        .stats-container, .bankroll-container, .game-result {
+            background-color: #1E1E1E;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 350px;
+            box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.3);
+            margin-top: 10px;
+        }
+        .highlight {
+            color: #00FF00;
+            font-weight: bold;
+        }
+        .validate-button, .result-button, .card-button {
+            background-color: #FFD700;
+            color: #121212;
+            font-size: 16px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 5px;
+        }
+        .validate-button:hover, .result-button:hover, .card-button:hover {
+            background-color: #FFC107;
+        }
+        .bankroll-input {
+            width: 120px;
+            padding: 8px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 2px solid #FFD700;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+        }
+        .advice {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #00FF00;
+        }
+        .card-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        .card-buttons button {
+            width: 50px;
+            height: 75px;
+            border: 2px solid #FFD700;
+            background-color: #1E1E1E;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-buttons button:hover {
+            transform: scale(1.1);
+            background-color: #FFD700;
+            color: #121212;
+        }
+        input[type="range"] {
+            width: 80%;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #FFD700;
+            border-radius: 5px;
+            outline: none;
+        }
+    </style>
+    <script>
+        let runningCount = 0;
+        let decksRemaining = 6;
+        let bankroll = 1000;
+
+        function updateDecks() {
+            decksRemaining = document.getElementById("deckRange").value;
+            document.getElementById("decks_remaining").innerText = decksRemaining;
+            recalculateBet();
+        }
+
+        function updateBankroll() {
+            let newBankroll = parseFloat(document.getElementById("bankrollInput").value);
+            if (!isNaN(newBankroll) && newBankroll > 0) {
+                bankroll = newBankroll;
+                document.getElementById("bankroll").innerText = bankroll.toFixed(2);
+                recalculateBet();
+            }
+        }
+
+        function updateCount(value) {
+            runningCount += value;
+            document.getElementById("running_count").innerText = runningCount;
+            recalculateBet();
+        }
+
+        function recalculateBet() {
+            let trueCount = runningCount / decksRemaining;
+            let suggestedBet = bankroll * (trueCount > 1 ? trueCount * 0.02 : 0.01);
+            document.getElementById("true_count").innerText = trueCount.toFixed(2);
+            document.getElementById("suggested_bet").innerText = suggestedBet.toFixed(2);
+            updateAdvice(trueCount);
+        }
+
+        function updateAdvice(trueCount) {
+            let advice = document.getElementById("bet_advice");
+            if (trueCount < 1) {
+                advice.innerHTML = "Mise minimale - <span style='color: #00FF00;'>Le jeu n'est pas favorable</span>";
+            } else if (trueCount >= 1 && trueCount < 3) {
+                advice.innerHTML = "Mise normale - <span style='color: #FFD700;'>Situation équilibrée</span>";
+            } else {
+                advice.innerHTML = "Mise agressive - <span style='color: red;'>Avantage joueur</span>";
+            }
+        }
+
+        function updateGameResult(result) {
+            let suggestedBet = parseFloat(document.getElementById("suggested_bet").innerText);
+            if (result === "win") {
+                bankroll += suggestedBet;
+            } else if (result === "lose") {
+                bankroll -= suggestedBet;
+            }
+            document.getElementById("bankroll").innerText = bankroll.toFixed(2);
+            document.getElementById("bankrollInput").value = bankroll.toFixed(2);
+            recalculateBet();
+        }
+    </script>
+</head>
+<body>
+
+    <div class="logo-container">
+        <img src="/static/logo.png" alt="Casinueves">
+    </div>
+
+    <div class="stats-container">
+        <p>Running Count: <span class="highlight" id="running_count">0</span></p>
+        <p>True Count: <span class="highlight" id="true_count">0.00</span></p>
+        <p>Decks Restants: <span class="highlight" id="decks_remaining">6.00</span></p>
+        <p>Mise suggérée: <span class="highlight" id="suggested_bet">10</span></p>
+        <p>Bankroll: <span class="highlight" id="bankroll">1000.00</span></p>
+    </div>
+
+    <div class="bankroll-container">
+        <h3>Modifier la bankroll :</h3>
+        <input type="number" id="bankrollInput" class="bankroll-input" value="1000">
+        <button class="validate-button" onclick="updateBankroll()">Mettre à jour</button>
+    </div>
+
+    <p class="advice" id="bet_advice">Mise minimale - Le jeu n'est pas favorable</p>
+
+    <div class="game-result">
+        <h3>Résultat de la manche :</h3>
+        <button class="result-button" onclick="updateGameResult('win')">Victoire</button>
+        <button class="result-button" onclick="updateGameResult('lose')">Défaite</button>
+        <button class="result-button" onclick="updateGameResult('push')">Abandon</button>
+    </div>
+
+</body>
+</html>

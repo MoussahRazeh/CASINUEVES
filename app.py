@@ -1,0 +1,80 @@
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
+from decimal import Decimal
+
+app = Flask(__name__)
+CORS(app)
+
+class HiOptII_BlackjackCounter:
+    def __init__(self, decks=6, bankroll=1000, base_bet=10):
+        self.running_count = 0
+        self.true_count = Decimal(0)
+        self.decks_remaining = Decimal(decks)
+        self.bankroll = Decimal(bankroll)
+        self.base_bet = Decimal(base_bet)
+        self.bet_spread = [1, 2, 5, 10, 15, 20]
+
+    def update_count(self, card):
+        card_values = {
+            "2": +1, "3": +1, "4": +2, "5": +2, "6": +1,
+            "7": +1, "8": 0, "9": 0,
+            "10": -2, "J": -2, "Q": -2, "K": -2, "A": 0
+        }
+        if card in card_values:
+            self.running_count += card_values[card]
+        self.true_count = Decimal(self.running_count) / max(Decimal("0.5"), self.decks_remaining)
+
+    def update_decks_remaining(self, decks_played):
+        self.decks_remaining = max(Decimal("0.5"), self.decks_remaining - Decimal(decks_played))
+
+    def suggest_bet(self):
+        index = min(max(int(self.true_count), 0), len(self.bet_spread) - 1)
+        return self.base_bet * self.bet_spread[index]
+
+    def update_bankroll(self, outcome):
+        bet = self.suggest_bet()
+        if outcome == "win":
+            self.bankroll += bet
+        elif outcome == "loss":
+            self.bankroll = max(Decimal("0"), self.bankroll - bet)
+
+    def status(self):
+        return {
+            "Running Count": self.running_count,
+            "True Count": round(self.true_count, 2),
+            "Decks Remaining": round(self.decks_remaining, 2),
+            "Suggested Bet": self.suggest_bet(),
+            "Bankroll": round(self.bankroll, 2)
+        }
+
+counter = HiOptII_BlackjackCounter()
+
+@app.route('/')
+def accueil():
+    return render_template("accueil.html")
+
+@app.route('/blackjack')
+def index():
+    return render_template("index.html", status=counter.status())
+
+@app.route('/update_count', methods=['POST'])
+def update_count():
+    card = request.form.get("card")
+    if card:
+        counter.update_count(card)
+    return jsonify(counter.status())
+
+@app.route('/update_decks', methods=['POST'])
+def update_decks():
+    decks_played = float(request.form.get("decks"))
+    counter.update_decks_remaining(decks_played)
+    return jsonify(counter.status())
+
+@app.route('/update_bankroll', methods=['POST'])
+def update_bankroll():
+    outcome = request.form.get("outcome")
+    counter.update_bankroll(outcome)
+    return jsonify(counter.status())
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
