@@ -7,40 +7,60 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="casino-effects-container"></div>
-    
-    <div class="container">
+    <!-- En-tête -->
+    <header class="header">
         <img src="/static/logo.png" alt="Casinueves Logo" class="logo">
-        <h1 class="animated-text">Bienvenue sur <span class="highlight">Casinueves</span></h1>
-        <p class="subtitle">The win solution for blackjack</p>
-        <p class="description">Casinueves est votre compagnon idéal pour améliorer votre jeu au blackjack grâce à une méthode de comptage avancée. Que vous soyez débutant ou expert, notre outil vous aidera à prendre les meilleures décisions pour maximiser vos gains. Plongez dans une expérience immersive avec une interface élégante et optimisée.</p>
-        <a href="/blackjack" class="btn">Commencer</a>
-    </div>
+        <a href="/blackjack" class="cta-button">Commencer</a>
+    </header>
 
-    <script>
-        function generateCasinoEffect() {
-            const effectsContainer = document.querySelector(".casino-effects-container");
-            const symbols = ["♦️", "♣️", "♥️", "♠️", "💰", "🎲", "🎰"];
-            const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-            
-            const span = document.createElement("span");
-            span.className = "casino-effect";
-            span.innerText = randomSymbol;
-            
-            const randomX = Math.random() * 100;
-            const randomDuration = Math.random() * 3 + 2;
-            
-            span.style.left = `${randomX}%`;
-            span.style.animationDuration = `${randomDuration}s`;
-            
-            effectsContainer.appendChild(span);
-            
-            setTimeout(() => {
-                span.remove();
-            }, randomDuration * 1000);
-        }
-        
-        setInterval(generateCasinoEffect, 1000);
-    </script>
+    <!-- Section principale -->
+    <section class="hero">
+        <h1 class="hero-title">Maîtrisez l’Art du Comptage</h1>
+        <p class="hero-subtitle">Optimisez vos mises. Jouez intelligemment.</p>
+        <a href="/blackjack" class="cta-button large">Tester Maintenant</a>
+    </section>
+
+    <!-- Section Présentation -->
+    <section class="presentation">
+        <h2>Pourquoi utiliser Casinueves ?</h2>
+        <div class="features">
+            <div class="feature">
+                <img src="/static/icon-precision.png" alt="Précision">
+                <p>Un suivi précis du True Count</p>
+            </div>
+            <div class="feature">
+                <img src="/static/icon-speed.png" alt="Rapidité">
+                <p>Calcul instantané de votre mise idéale</p>
+            </div>
+            <div class="feature">
+                <img src="/static/icon-security.png" alt="Sécurité">
+                <p>Confidentialité et transparence garanties</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Témoignages -->
+    <section class="testimonials">
+        <h2>Ils ont testé Casinueves</h2>
+        <div class="testimonial-container">
+            <div class="testimonial">
+                <p>"Grâce à Casinueves, j’ai amélioré mes décisions de mise."</p>
+                <span>★★★★★</span>
+            </div>
+            <div class="testimonial">
+                <p>"Interface intuitive et super précise, top !"</p>
+                <span>★★★★★</span>
+            </div>
+            <div class="testimonial">
+                <p>"Un indispensable pour les joueurs sérieux."</p>
+                <span>★★★★★</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>© 2025 Casinueves - Tous droits réservés.</p>
+    </footer>
 </body>
 </html>

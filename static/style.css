@@ -1,4 +1,4 @@
-/* 🌑 Mode sombre élégant */
+/* 🌑 Mode sombre élégant & fond texturé */
 body {
     background-color: #121212;
     color: #E0E0E0;
@@ -6,29 +6,104 @@ body {
     text-align: center;
     margin: 0;
     padding: 20px;
+    background-image: url("/static/texture.jpg");
+    background-size: cover;
+    background-blend-mode: multiply;
 }
 
-/* 🎰 Réduction et intégration fluide du logo */
-.logo-container img {
+/* 📌 En-tête (Header) amélioré */
+header {
+    height: 80px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid #D4AF37;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+header img {
     width: 150px;
-    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 0.4));
-    margin-bottom: 10px;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.8));
 }
 
-/* 📊 Amélioration du tableau de statistiques */
+nav a {
+    color: #E0E0E0;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 500;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+nav a:hover {
+    color: #00FFFF;
+    text-shadow: 0 0 10px #D4AF37;
+}
+
+/* Section HERO principale immersive */
+.hero-section {
+    height: 600px;
+    background: url("/static/texture.jpg") center center/cover no-repeat;
+    background-blend-mode: multiply;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-logo {
+    width: 200px;
+    filter: drop-shadow(0 0 12px rgba(212,175,55,0.8));
+    margin-bottom: 20px;
+}
+
+.hero-section h1 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.hero-section .cta-button {
+    width: 220px;
+    height: 55px;
+    background: linear-gradient(45deg, #00FFFF, #D4AF37);
+    color: #121212;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    border: none;
+}
+
+.hero-section .cta-button:hover {
+    box-shadow: 0 0 20px #00FFFF;
+    transform: scale(1.05);
+}
+
+/* 📊 Tableau de statistiques */
 .stats-container {
-    background-color: #1E1E1E;
+    background-color: rgba(30, 30, 30, 0.9);
     padding: 20px;
     border-radius: 12px;
     max-width: 400px;
     margin: 20px auto;
-    box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: 0px 0px 15px rgba(212,175,55,0.4);
     border: 2px solid #FFD700;
 }
 
 .stats-container h2 {
     color: #FFD700;
     font-size: 22px;
+    margin-bottom: 10px;
 }
 
 .stats-container p {
@@ -43,9 +118,9 @@ body {
     border-radius: 5px;
 }
 
-.gold { color: #FFD700; }  /* Doré pour mise et gains */
-.emerald { color: #00C853; }  /* Vert émeraude pour avantage joueur */
-.cyan { color: #00E5FF; }  /* Cyan pour les données neutres */
+.gold { color: #FFD700; }
+.emerald { color: #00C853; }
+.cyan { color: #00E5FF; }
 
 /* 🎴 Boutons de cartes stylisés */
 .card-buttons {
@@ -78,22 +153,24 @@ body {
     transform: scale(1.1);
 }
 
-/* 🔘 Amélioration des autres boutons */
+/* 🔘 Boutons divers stylisés */
 .validate-button, .result-button {
-    background-color: #00C853;
-    color: black;
     font-size: 16px;
     padding: 10px 20px;
-    border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
+    transition: all 0.3s ease;
     margin: 5px;
+    border: none;
+}
+
+.validate-button {
+    background-color: #00C853;
+    color: black;
 }
 
 .validate-button:hover {
     background-color: #FFD700;
-    color: black;
 }
 
 .result-button {
@@ -103,4 +180,74 @@ body {
 .result-button:hover {
     background-color: #FFD700;
     color: black;
+}
+
+/* 🌟 Section fonctionnalités stylisée */
+.features-section {
+    background: linear-gradient(#212121, #121212);
+    padding: 50px 20px;
+}
+
+.features-section h2 {
+    color: #FFD700;
+    margin-bottom: 30px;
+}
+
+.features-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.feature {
+    width: 30%;
+    background: rgba(30,30,30,0.9);
+    padding: 15px;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.feature:hover {
+    transform: scale(1.05);
+}
+
+.feature .icon {
+    font-size: 50px;
+}
+
+.feature h3 {
+    color: #50C878;
+}
+
+/* 🗨️ Témoignages */
+.testimonials-section {
+    background-color: rgba(18,18,18,0.95);
+    padding: 40px 20px;
+}
+
+.testimonial-card {
+    background: rgba(30,30,30,0.9);
+    box-shadow: 0 0 15px rgba(212,175,55,0.5);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* 📌 Footer simplifié et élégant */
+footer {
+    background-color: #101010;
+    padding: 15px;
+    text-align: center;
+    color: #AAA;
+    border-top: 2px solid #D4AF37;
+    font-size: 14px;
+}
+
+/* ✨ Divers effets */
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+button:hover {
+    box-shadow: 0 0 10px rgba(0,255,255,0.6);
 }
