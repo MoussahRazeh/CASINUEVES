@@ -27,9 +27,10 @@ class HiOptII_BlackjackCounter:
     def update_decks_remaining(self, decks_played):
         self.decks_remaining = max(Decimal("0.5"), self.decks_remaining - Decimal(decks_played))
 
-    def suggest_bet(self):
-        index = min(max(int(self.true_count), 0), len(self.bet_spread) - 1)
-        return self.base_bet * self.bet_spread[index]
+    def suggest_bet():
+        """Détermine la mise suggérée en fonction du True Count"""
+        index = min(max(int(counter.true_count), 0), len(counter.bet_spread) - 1)
+        return counter.base_bet * counter.bet_spread[index]
 
     def update_bankroll(self, outcome):
         bet = self.suggest_bet()
@@ -38,13 +39,13 @@ class HiOptII_BlackjackCounter:
         elif outcome == "loss":
             self.bankroll = max(Decimal("0"), self.bankroll - bet)
 
-    def status(self):
+    def status():
         return {
-            "Running Count": self.running_count,
-            "True Count": round(self.true_count, 2),
-            "Decks Remaining": round(self.decks_remaining, 2),
-            "Suggested Bet": self.suggest_bet(),
-            "Bankroll": round(self.bankroll, 2)
+           "Running Count": counter.running_count,
+           "True Count": round(counter.true_count, 2),
+           "Decks Remaining": round(counter.decks_remaining, 2),
+           "Suggested Bet": suggest_bet(),  # Calcul de la mise en fonction du TC
+           "Bankroll": round(counter.bankroll, 2)
         }
 
 counter = HiOptII_BlackjackCounter()
@@ -55,13 +56,21 @@ def accueil():
 
 @app.route('/blackjack')
 def index():
-    return render_template("index.html", status=counter.status())
+    return render_template("index.html", status=counter.status)
 
 @app.route('/update_count', methods=['POST'])
 def update_count():
-    card = request.form.get("card")
-    if card:
-        counter.update_count(card)
+    card_value = request.form.get("card")  # Récupère la carte
+
+    if card_value is not None:
+        try:
+            # Convertir la valeur de la carte en int (car on reçoit un nombre du JavaScript)
+            card_value = int(card_value)
+            counter.running_count += card_value  # Ajouter directement la valeur
+            counter.true_count = Decimal(counter.running_count) / max(Decimal("0.5"), counter.decks_remaining)
+        except ValueError:
+            return jsonify({"error": "Valeur de carte invalide"}), 400  # Gérer les erreurs
+
     return jsonify(counter.status())
 
 @app.route('/update_decks', methods=['POST'])

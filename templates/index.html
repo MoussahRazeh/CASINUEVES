@@ -54,37 +54,33 @@
 
     <!-- 📌 Ajout des scripts directement dans la page -->
     <script>
-        async function updateCount(value) {
-            let response = await fetch("/update_count", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: "card=" + value
-            });
+    async function updateCount(value) {
+        let response = await fetch("/update_count", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: "card=" + value
+        });
 
-            let data = await response.json();
-            document.getElementById("running_count").innerText = data["Running Count"];
-            document.getElementById("true_count").innerText = data["True Count"];
-            document.getElementById("decks_remaining").innerText = data["Decks Remaining"];
+        let data = await response.json();
+        document.getElementById("running_count").innerText = data["Running Count"];
+        document.getElementById("true_count").innerText = data["True Count"];
+        document.getElementById("decks_remaining").innerText = data["Decks Remaining"];
+        document.getElementById("suggested_bet").innerText = data["Suggested Bet"];
+
+        updateAdvice(data["True Count"]);  // Mise à jour du message en fonction du TC
+    }
+
+    function updateAdvice(trueCount) {
+        let advice = document.getElementById("bet_advice");
+        if (trueCount < 1) {
+            advice.innerHTML = "Mise minimale - <span style='color: #00FF00;'>Le jeu n'est pas favorable</span>";
+        } else if (trueCount >= 1 && trueCount < 3) {
+            advice.innerHTML = "Mise normale - <span style='color: #FFD700;'>Situation équilibrée</span>";
+        } else {
+            advice.innerHTML = "Mise agressive - <span style='color: red;'>Avantage joueur</span>";
         }
-
-        function updateBankroll() {
-            let newBankroll = parseFloat(document.getElementById("bankrollInput").value);
-            if (!isNaN(newBankroll) && newBankroll > 0) {
-                document.getElementById("bankroll").innerText = newBankroll.toFixed(2);
-            }
-        }
-
-        function updateGameResult(result) {
-            let bankrollElement = document.getElementById("bankroll");
-            let bankroll = parseFloat(bankrollElement.innerText);
-            let bet = parseFloat(document.getElementById("suggested_bet").innerText);
-            
-            if (result === "win") bankroll += bet;
-            else if (result === "lose") bankroll -= bet;
-
-            bankrollElement.innerText = bankroll.toFixed(2);
-            document.getElementById("bankrollInput").value = bankroll.toFixed(2);
-        }
+    }
     </script>
 </body>
 </html>
+
